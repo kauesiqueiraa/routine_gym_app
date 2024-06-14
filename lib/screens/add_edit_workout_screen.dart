@@ -7,7 +7,7 @@ import 'package:routine_gym_app/providers/workouts_provider.dart';
 class AddEditWorkoutScreen extends StatefulWidget {
   final WorkoutModel? workout;
 
-  const AddEditWorkoutScreen({super.key,this.workout});
+  const AddEditWorkoutScreen({super.key, this.workout});
 
   @override
   AddEditWorkoutScreenState createState() => AddEditWorkoutScreenState();
@@ -38,19 +38,83 @@ class AddEditWorkoutScreenState extends State<AddEditWorkoutScreen> {
         exercises: _exercises,
       );
       if (widget.workout != null) {
-        Provider.of<WorkoutsProvider>(context, listen: false).addWorkout(newWorkout);
-      } else {
         Provider.of<WorkoutsProvider>(context, listen: false).updateWorkout(newWorkout);
+      } else {
+        Provider.of<WorkoutsProvider>(context, listen: false).addWorkout(newWorkout);
       }
       Navigator.of(context).pop();
     }
+  }
+
+  void _addExercise() {
+    showDialog(
+      context: context, 
+      builder: (ctx) {
+        final _exerciseNameController = TextEditingController();
+        final _setsController = TextEditingController();
+        final _repsController = TextEditingController();
+        final _weightController = TextEditingController();
+
+        return AlertDialog(
+          title: const Text('Add Exercise'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _exerciseNameController,
+                decoration: const InputDecoration(labelText: 'Exercise Name'),
+              ),
+              TextFormField(
+                controller: _setsController,
+                decoration: const InputDecoration(labelText: 'Sets'),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                controller: _repsController,
+                decoration: const InputDecoration(labelText: 'Reps'),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                controller: _weightController,
+                decoration: const InputDecoration(labelText: 'Weight (kg)'),
+                keyboardType: TextInputType.number,
+              ),
+            ]
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Add'),
+              onPressed: () {
+                final newExercise = ExerciseModel(
+                  name: _exerciseNameController.text,
+                  sets: int.parse(_setsController.text),
+                  reps: int.parse(_repsController.text),
+                  weight: double.parse(_weightController.text), 
+                  id: '',
+                );
+                setState(() {
+                  _exercises.add(newExercise);
+                });
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.workout != null ? 'Add Workout' : 'Edit Workout'),
+        title: Text(widget.workout != null ? 'Edit Workout' : 'Add Workout'),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -66,7 +130,7 @@ class AddEditWorkoutScreenState extends State<AddEditWorkoutScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'WorkoutName'),
+                decoration: const InputDecoration(labelText: 'Workout Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'WorkoutName is required';
@@ -82,6 +146,17 @@ class AddEditWorkoutScreenState extends State<AddEditWorkoutScreen> {
                     return 'Date is required';
                   }
                   return null;
+                },
+                onTap: () async {
+                  final selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: widget.workout != null ? widget.workout!.date : DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (selectedDate != null) {
+                    _dateController.text = selectedDate.toLocal().toString().split(' ')[0];
+                  }
                 },
               ),
               Expanded(
@@ -105,9 +180,8 @@ class AddEditWorkoutScreenState extends State<AddEditWorkoutScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  
-                }, child: const Text('Add Exercise'),
+                onPressed: _addExercise, 
+                child: const Text('Add Exercise'),
               )
             ],
           )

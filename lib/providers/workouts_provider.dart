@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:routine_gym_app/models/workout_model.dart';
 
 class WorkoutsProvider with ChangeNotifier {
-  final List<WorkoutModel> _workouts = [];
+  List<WorkoutModel> _workouts = [];
 
   List<WorkoutModel> get workouts => _workouts;
 
-  void addWorkout(WorkoutModel workoutModel) {
-    final index = _workouts.indexWhere((w) => w.id == workoutModel.id);
-    if (index >= 0) {
-      _workouts[index] = workoutModel;
+  void addWorkout(WorkoutModel workout) {
+      _workouts.add(workout);
       notifyListeners();
     }
-  }
 
-  void updateWorkout(WorkoutModel workoutModel) {
-    final index = _workouts.indexWhere((w) => w.id == workoutModel.id);
+  void updateWorkout(WorkoutModel workout) {
+    final index = _workouts.indexWhere((w) => w.id == workout.id);
     if (index >= 0) {
-      _workouts[index] = workoutModel;
+      _workouts[index] = workout;
       notifyListeners();
     }
   }
