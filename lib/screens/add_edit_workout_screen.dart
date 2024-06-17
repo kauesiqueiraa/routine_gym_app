@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:routine_gym_app/models/exercise_model.dart';
 import 'package:routine_gym_app/models/workout_model.dart';
 import 'package:routine_gym_app/providers/workouts_provider.dart';
+import 'package:routine_gym_app/widgets/styled_button_widget.dart';
 
 class AddEditWorkoutScreen extends StatefulWidget {
   final WorkoutModel? workout;
@@ -130,10 +132,17 @@ class AddEditWorkoutScreenState extends State<AddEditWorkoutScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Workout Name'),
+                decoration: InputDecoration(
+                  labelText: 'Nome do Treinamento',
+                  labelStyle: TextStyle(color: Colors.amber),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(20.0),
+                  )
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'WorkoutName is required';
+                    return 'Nome do Treinamento é obrigatório';
                   }
                   return null;
                 },
@@ -179,10 +188,10 @@ class AddEditWorkoutScreenState extends State<AddEditWorkoutScreen> {
                   }
                 ),
               ),
-              ElevatedButton(
-                onPressed: _addExercise, 
-                child: const Text('Add Exercise'),
-              )
+              StyledButtonWidget(
+                text: 'Add Exercise',
+                onPressed: _addExercise,
+              ),
             ],
           )
         ),

@@ -24,7 +24,16 @@ class MyApp extends StatelessWidget {
         title: 'Gym Routine',
         theme: ThemeData(
           primarySwatch: Colors.amber,
-          useMaterial3: true,
+          fontFamily: 'Montserrat',
+          textTheme: const TextTheme(
+            headlineLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+            headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            bodyLarge: TextStyle(fontSize: 18),
+            bodyMedium: TextStyle(fontSize: 16),
+            bodySmall: TextStyle(fontSize: 14),
+          ),
+        
         ),
         home: const HomeScreen(),
       )

@@ -20,12 +20,21 @@ class PerformanceScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Performance'),
       ),
-      body: Center(
+      body: 
+      Padding(
+        padding: const EdgeInsets.all(16.0),
         child: charts.BarChart(
           seriesList,
           animate: animate,
+          animationDuration: Duration(milliseconds: 1000),
         ),
       )
+      // Center(
+      //   child: charts.BarChart(
+      //     seriesList,
+      //     animate: animate,
+      //   ),
+      // )
     );
   }
 
