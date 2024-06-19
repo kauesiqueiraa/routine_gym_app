@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                 const Row(
                   children: [
                     CircleAvatar(
-                      radius: 30,
+                      radius: 20,
                       backgroundImage: AssetImage(''),
                     ),
                     SizedBox(width: 10),
@@ -85,11 +85,18 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text(
-                      DateFormat('MMMM', 'pt_BR')
-                          .format(now), // Nome do mês em português
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                    Container(
+                      padding:  const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.orange[500],
+                        borderRadius: const BorderRadius.only(topRight: Radius.circular(50), bottomRight: Radius.circular(50)),
+                      ),
+                      child: Text(
+                        DateFormat('MMMM', 'pt_BR')
+                            .format(now), // Nome do mês em português
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const SizedBox(
                         width:
@@ -118,7 +125,7 @@ class HomeScreen extends StatelessWidget {
                                     height: 30,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.amber,
+                                      color: Colors.orange[400],
                                     ),
                                     child: Center(
                                       child: Text(
@@ -141,110 +148,200 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 const Text(
-                  'Planejamento da Semana',
+                  'Treino Personalizado',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Container(
                   height: 150,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.amber,
+                    color: Colors.orange[400],
                   ),
-                  child: Center(
-                    child: Text('Planejamento da Semana aqui'),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: Opacity(
+                          opacity: 0.9,
+                          child: Image.asset(
+                            'assets/images/force.png',
+                            width: 100, 
+                            height: 80,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Nome do Treino aqui', 
+                                  style:TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                                ),
+                                const SizedBox(height: 10),
+                                // a porcentagem de progresso aqui
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Progresso ${progress.toStringAsFixed(1)}%', style: const TextStyle(fontSize: 15, color: Colors.white)),
+                                const SizedBox(height: 10),
+                                // uma barra de progresso aqui
+                                Container(
+                                  width: 200,
+                                  child: LinearProgressIndicator(
+                                    value: progress,
+                                    backgroundColor: Colors.white.withOpacity(0.3),
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+                                  ),
+                                )
+                                  ],
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(Icons.more_vert_rounded, color: Colors.white),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Progresso',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // const Text(
+                //   'Progresso',
+                //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // ),
+                // const SizedBox(height: 10),
+                // Container(
+                //   height: 200,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10),
+                //     color: Colors.amber,
+                //   ),
+                //   child: Center(
+                //     child: PieChart(
+                //       PieChartData(
+                //         sections: [
+                //           PieChartSectionData(
+                //             value: progress,
+                //             title: '${progress.toStringAsFixed(1)}%',
+                //             color: Colors.green,
+                //             radius: 30,
+                //             titleStyle: TextStyle(
+                //               fontSize: 18,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.white,
+                //             ),
+                //           ),
+                //           PieChartSectionData(
+                //             value: 100 - progress,
+                //             title: '',
+                //             color: Colors.grey[300],
+                //             radius: 30,
+                //           ),
+                //         ],
+                //         centerSpaceRadius: 20,
+                //         sectionsSpace: 0,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Metas',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange[400],
+                        shape: const CircleBorder(),
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const GoalsScreen(),
+                          ),
+                        );
+                      }, 
+                      child: const Icon(Icons.add, color: Colors.white, size: 30,),
+                    ),
+                    
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  height: 200,
+                  height: 180,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.amber,
+                    color: Colors.orange[400],
                   ),
-                  child: Center(
-                    child: PieChart(
-                      PieChartData(
-                        sections: [
-                          PieChartSectionData(
-                            value: progress,
-                            title: '${progress.toStringAsFixed(1)}%',
-                            color: Colors.green,
-                            radius: 30,
-                            titleStyle: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  child: Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: goals.map((goal) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => const GoalsScreen(),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              width: 150,
+                              child: Card(
+                                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                                color: Colors.white,
+                                borderOnForeground: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        goal.description,
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      // Text(
+                                      //   'Até ${goal.targetDate.toLocal().toString().split(' ')[0]}',
+                                      //   style: const TextStyle(fontSize: 15),
+                                      // ),
+                                      const SizedBox(height: 5),
+                                      Checkbox(
+                                        value: goal.achieved,
+                                        onChanged: (value) {
+                                          goalsProvider.toggleGoalAchieved(goal.id);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          PieChartSectionData(
-                            value: 100 - progress,
-                            title: '',
-                            color: Colors.grey[300],
-                            radius: 30,
-                          ),
-                        ],
-                        centerSpaceRadius: 20,
-                        sectionsSpace: 0,
+                          );
+                        }).toList(),
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Metas',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amber[300],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: goals.map((goal) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => const GoalsScreen(),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            margin: const EdgeInsets.all(8),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    goal.description,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    'Até ${goal.targetDate.toLocal().toString().split(' ')[0]}',
-                                    style: const TextStyle(fontSize: 15),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Checkbox(
-                                    value: goal.achieved,
-                                    onChanged: (value) {
-                                      goalsProvider.toggleGoalAchieved(goal.id);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
                     ),
                   ),
                 ),
