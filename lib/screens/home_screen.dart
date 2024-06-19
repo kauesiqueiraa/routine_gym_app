@@ -1,6 +1,8 @@
 import 'package:community_charts_flutter/community_charts_flutter.dart'
     as charts;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:routine_gym_app/providers/goals_provider.dart';
 import 'package:routine_gym_app/providers/workouts_provider.dart';
@@ -24,6 +26,14 @@ class HomeScreen extends StatelessWidget {
         goals.where((goal) => goal.achieved).length.toDouble();
     double totalGoals = goals.length.toDouble();
     double progress = totalGoals == 0 ? 0 : (completedGoals / totalGoals) * 100;
+
+    // dias da semana
+    List<String> weekDays = [];
+    DateTime now = DateTime.now();
+    for (int i = 0; i < 7; i++) {
+      DateTime day = now.add(Duration(days: i));
+      weekDays.add(DateFormat('EEEE', 'pt_BR').format(day));
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -69,6 +79,62 @@ class HomeScreen extends StatelessWidget {
                       'Olá The Boss',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      DateFormat('MMMM', 'pt_BR')
+                          .format(now), // Nome do mês em português
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                        width:
+                            20), // Espaço entre o nome do mês e os dias da semana
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: weekDays.map((day) {
+                            int dayIndex = weekDays.indexOf(day) - 7;
+                            DateTime date = now.add(Duration(days: dayIndex));
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    day.substring(0,
+                                        3), // Exibe os primeiros 3 caracteres do dia (por exemplo, Seg, Ter)
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.amber,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${date.day}',
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ],
                 ),
